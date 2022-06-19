@@ -100,6 +100,6 @@ class Text{
         ctx.fillStyle=this.color;
         ctx.font=this.s+'px Arial';
         ctx.textAlign=this.a;
-        
+        ctx
     }
 }
