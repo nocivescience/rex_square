@@ -17,36 +17,27 @@ class TRex{
         this.movingWheels = true;
         this.verticalEngine=false;
         this.horizontalEngine=false;
-        this.cloudAsteroides=[
-            {
-                x:canvas.width/2+Math.random()*canvas.width/2,
-                y:canvas.height/2+Math.random()*canvas.height/2,
-                r:Math.random()*100
-            },
-            {
-                x:canvas.width/2+Math.random()*canvas.width/2,
-                y:canvas.height/2+Math.random()*canvas.height/2,
-                r:Math.random()*100
-            },
-            {
-                x:canvas.width/2+Math.random()*canvas.width/2,
-                y:canvas.height/2+Math.random()*canvas.height/2,
-                r:Math.random()*100
-            },
-            {
-                x:canvas.width/2+Math.random()*canvas.width/2,    
-                y:canvas.height/2+Math.random()*canvas.height/2,
-                r:Math.random()*100
-            },
-            {
-                x:canvas.width/2+Math.random()*canvas.width/2,
-                y:canvas.height/2+Math.random()*canvas.height/2,
-                r:Math.random()*100
-            },
-        ]
+        this.backingEngine=false;
+        this.coordinatingAsteroides=this.coordinatingAsteroides();
     };
-    setCloudAsteroides(){
-        
+    setCloudAsteroides(x,y,r){
+        var roid = {x,y,r}
+        return roid
+    };
+    coordinatingAsteroides(){
+        let cloudAsteroides=[];
+        const totalRoids=5;
+        var x,y;
+        for(let i=0;i<totalRoids;i++){
+            do{
+                x=Math.random()*canvas.width;
+                y=Math.random()*canvas.height-100;
+            }while(
+                Math.pow(x-this.x,2)+Math.pow(y-this.y,2)<Math.pow(100,2)
+            )
+            cloudAsteroides.push(this.setCloudAsteroides(x,y,Math.random()*20+10));
+        };
+        return cloudAsteroides;
     };
     draw(){
         ctx.fillStyle = this.c;
@@ -71,7 +62,7 @@ class TRex{
             ctx.strokeStyle="red";
             ctx.fillStyle="yellow";
             ctx.moveTo(this.x-20,this.y+40);
-            ctx.lineTo(this.x-12,this.y+60+Math.random()*15);
+            ctx.lineTo(this.x-(!this.backingEngine?12:3),this.y+60+Math.random()*15);
             ctx.lineTo(this.x-5,this.y+40);
             ctx.stroke();
             ctx.fill();
@@ -111,10 +102,13 @@ class TRex{
         }
         if(keys['KeyA']&&this.playing){
             this.x -= gameSpeed;
+            this.backingEngine=true;
             if(this.x<0){
                 this.x=0;
             }
-        }
+        }else{
+            this.backingEngine=false;
+        };
         if(keys['KeyW']&&this.playing){
             this.y -= Math.pow((this.y)/9,1.1)-10;
             this.movingWheels=false;
@@ -139,25 +133,158 @@ class TRex{
         }
     }
     drawAsteroides(){
-        for(let i=0;i<this.cloudAsteroides.length;i++){
-            ctx.beginPath();
+    for(let i=0;i<this.coordinatingAsteroides.length;i++){
+        if(this.coordinatingAsteroides[i].x<0){
+            this.coordinatingAsteroides[i].x=canvas.width;
+            this.coordinatingAsteroides[i].y=canvas.height*Math.random()-100;
+        };
+        ctx.beginPath();
             ctx.fillStyle="rgb(0, 170, 255)";
             ctx.strokeStyle="black";
             ctx.lineWidth=3;
-            ctx.arc(this.cloudAsteroides[i].x-=Math.random(),this.cloudAsteroides[i].y,this.cloudAsteroides[i].r,0,2*Math.PI);
+            ctx.arc(this.coordinatingAsteroides[i].x-=Math.random(),this.coordinatingAsteroides[i].y,this.coordinatingAsteroides[i].r,0,2*Math.PI);
             ctx.fill();
             ctx.stroke();
             ctx.closePath();
         }
     };
+    drawDino(){
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+20,this.y-5,70,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+35,this.y-10,55,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+40,this.y-15,50,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+45,this.y-20,45,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+50,this.y-25,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+55,this.y-30,60,5);
+        ctx.fill();
+        ctx.closePath();
+        //manita
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+105,this.y-25,10,5);
+        ctx.fill();
+        ctx.closePath();
+        //manita
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+60,this.y-35,30,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+65,this.y-40,25,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+70,this.y-45,20,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+75,this.y-50,45,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+80,this.y-55,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+85,this.y-60,10,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+90,this.y-65,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+90,this.y-70,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+90,this.y-75,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+90,this.y-80,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+90,this.y-85,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+80,this.y-90,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+70,this.y-95,40,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="rgba(255, 255, 255, 1)";
+        ctx.strokeStyle="black";
+        ctx.lineWidth=3;
+        ctx.strokeRect(this.x+100,this.y-80,10,5);
+        ctx.fillRect(this.x+100,this.y-80,10,5);
+        ctx.stroke();
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+10,this.y-10,25,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+5,this.y-15,15,5);
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x,this.y-20,10,5);
+        ctx.fill();
+        ctx.closePath();
+      };
 }
 const tiranoRex = new TRex(0,0,100,100,"red");
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     tiranoRex.soilDraw();
-    tiranoRex.drawAsteroides();
     tiranoRex.drawing();
     tiranoRex.draw();
+    tiranoRex.drawDino();
+    tiranoRex.drawAsteroides();
     requestAnimationFrame(update);
 }
 update();
