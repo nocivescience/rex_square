@@ -202,7 +202,7 @@ class TRex{
         //manita
         ctx.beginPath();
         ctx.fillStyle="black";
-        ctx.fillRect(this.x+105,this.y-25,10,5);
+        ctx.fillRect(this.x+115,this.y-25,-10+Math.random()*5,5);
         ctx.fill();
         ctx.closePath();
         //manita
@@ -269,7 +269,7 @@ class TRex{
         //colita
         ctx.beginPath();
         ctx.fillStyle="black";
-        ctx.fillRect(this.x+70,this.y-95,40,5);
+        ctx.fillRect(this.x+100,this.y-95,-30+Math.random()*5,5);
         ctx.fill();
         ctx.closePath();
         ctx.beginPath();
@@ -298,7 +298,7 @@ class TRex{
         ctx.closePath();
         ctx.beginPath();
         ctx.fillStyle="black";
-        ctx.fillRect(this.x+Math.random()*4,this.y-25,Math.random()<.5?-5:-10,Math.random()<.5?5:10);
+        ctx.fillRect(this.x,this.y-25,-10+Math.random()*5,5);
         ctx.fill();
         ctx.closePath();
       };
