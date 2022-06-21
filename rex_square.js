@@ -132,9 +132,8 @@ class TRex{
         }else{
             this.verticalEngine=false;
         }
-        if(keys['KeyS']&&this.playing){
+        if(!keys['KeyW']){
             this.y += gameSpeed;
-            this.movingWheels=false;
         }
     };
     soilDraw(){
