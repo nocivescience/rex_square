@@ -2,8 +2,7 @@ let keys={};
 const gameSpeed = 3;
 const canvas=document.querySelector("canvas");
 const ctx=canvas.getContext("2d");
-
-let rocks=[];
+const scoreEl=document.querySelector("#score");
 class TRex{
     constructor(x,y,w,h,c){
         this.x = x;
@@ -19,6 +18,17 @@ class TRex{
         this.horizontalEngine=false;
         this.backingEngine=false;
         this.coordinatingAsteroides=this.coordinatingAsteroides();
+        this.rocks=[];
+        this.colors=[
+            'red',
+            'green',
+            'rgb(0, 208, 255)',
+            'yellow',
+            'orange',
+            'purple',
+            'pink',
+        ],
+        this.actualScore=0;
     };
     setCloudAsteroides(x,y,r){
         var roid = {x,y,r}
@@ -56,6 +66,11 @@ class TRex{
         ctx.fillStyle = "black";
         ctx.fillRect(this.x-22,this.y+10,60/3,30);
         ctx.closePath();
+        ctx.beginPath();
+        ctx.font="22px VT323";
+        ctx.fillStyle="yellow";
+        ctx.fillText("DinoApruebo",this.x+2,this.y+30);
+        ctx.closePath();
         if(this.verticalEngine){
             ctx.beginPath();
             ctx.lineWidth=5;
@@ -81,12 +96,13 @@ class TRex{
             ctx.closePath();
         };
     };
+    //cuidado con esto que es lo que necesito modificar
     falling(){
-        this.y += Math.pow((this.y+2)/10,1.1);
+        this.y += 3;
     };
     drawing(){
-        if(this.y>canvas.height-this.h*2){
-            this.y=canvas.height-this.h*2;
+        if(this.y>canvas.height-140){
+            this.y=canvas.height-140;
             this.playing=true;
             this.movingWheels=true;
         }
@@ -138,14 +154,18 @@ class TRex{
             this.coordinatingAsteroides[i].x=canvas.width;
             this.coordinatingAsteroides[i].y=canvas.height*Math.random()-100;
         };
-        ctx.beginPath();
-            ctx.fillStyle="rgb(0, 170, 255)";
+            const color=i%this.colors.length;
+            ctx.beginPath();
+            ctx.fillStyle=this.colors[color];
             ctx.strokeStyle="black";
             ctx.lineWidth=3;
-            ctx.arc(this.coordinatingAsteroides[i].x-=Math.random(),this.coordinatingAsteroides[i].y,this.coordinatingAsteroides[i].r,0,2*Math.PI);
+            ctx.arc(this.coordinatingAsteroides[i].x-=3*Math.random(),this.coordinatingAsteroides[i].y,this.coordinatingAsteroides[i].r+3*Math.random(),0,2*Math.PI);
             ctx.fill();
             ctx.stroke();
             ctx.closePath();
+            if(this.coordinatingAsteroides[i].x<0){
+                this.actualScore=0;
+            }
         }
     };
     drawDino(){
@@ -246,6 +266,7 @@ class TRex{
         ctx.fillRect(this.x+80,this.y-90,40,5);
         ctx.fill();
         ctx.closePath();
+        //colita
         ctx.beginPath();
         ctx.fillStyle="black";
         ctx.fillRect(this.x+70,this.y-95,40,5);
@@ -275,6 +296,24 @@ class TRex{
         ctx.fillRect(this.x,this.y-20,10,5);
         ctx.fill();
         ctx.closePath();
+        ctx.beginPath();
+        ctx.fillStyle="black";
+        ctx.fillRect(this.x+Math.random()*4,this.y-25,Math.random()<.5?-5:-10,Math.random()<.5?5:10);
+        ctx.fill();
+        ctx.closePath();
+      };
+      drawScore(){
+        const pointX=this.x+60;
+        const pointY=this.y-30;
+        this.coordinatingAsteroides.forEach(dot=>{
+            const distance=Math.sqrt(Math.pow(pointX-dot.x,2)+Math.pow(pointY-dot.y,2));
+            if(distance<=dot.r+40){
+                dot.x=canvas.width;
+                dot.y=Math.random()*canvas.height-100;
+                this.actualScore++;
+            }
+        });
+        scoreEl.innerHTML=`Score: ${this.actualScore}`;
       };
 }
 const tiranoRex = new TRex(0,0,100,100,"red");
@@ -285,6 +324,7 @@ function update(){
     tiranoRex.draw();
     tiranoRex.drawDino();
     tiranoRex.drawAsteroides();
+    tiranoRex.drawScore();
     requestAnimationFrame(update);
 }
 update();
