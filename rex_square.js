@@ -69,7 +69,7 @@ class TRex{
         ctx.beginPath();
         ctx.font="22px VT323";
         ctx.fillStyle="yellow";
-        ctx.fillText("DinoApruebo",this.x+2,this.y+30);
+        ctx.fillText("DinoApruebo",this.x+2,this.y+26);
         ctx.closePath();
         if(this.verticalEngine){
             ctx.beginPath();
@@ -201,7 +201,7 @@ class TRex{
         //manita
         ctx.beginPath();
         ctx.fillStyle="black";
-        ctx.fillRect(this.x+115,this.y-25,-10+Math.random()*5,5);
+        ctx.fillRect(this.x+115,this.y-25,-10,5);
         ctx.fill();
         ctx.closePath();
         //manita
@@ -315,7 +315,7 @@ class TRex{
         scoreEl.innerHTML=`Score: ${this.actualScore}`;
       };
 }
-const tiranoRex = new TRex(0,0,100,100,"red");
+const tiranoRex = new TRex(0,0,100,90,"red");
 function update(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     tiranoRex.soilDraw();
